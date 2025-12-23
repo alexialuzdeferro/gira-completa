@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Gira das 12 Luas - O Manifesto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sangue: #880808;
+            --ouro: #d4af37;
+            --escuridao: #050505;
+            --vinho: #4a0404;
+        }
+
+        body {
+            background-color: var(--escuridao);
+            color: #f0f0f0;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3 { font-family: 'Cinzel Decorative', cursive; }
+        .serif-italic { font-family: 'Playfair Display', serif; font-style: italic; }
+
+        /* Scroll */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--escuridao); }
+        ::-webkit-scrollbar-thumb { background: var(--sangue); }
+
+        /* Portais de Conexão (Apenas no Manifesto) */
+        .portal-fixo {
+            position: absolute; /* Mudado para absolute para ficar preso à secção */
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 5px var(--sangue));
+            text-decoration: none;
+        }
+
+        .portal-redes { top: 20px; right: 20px; }
+        .portal-bio { top: 20px; left: 20px; }
+
+        .portal-fixo svg {
+            fill: var(--ouro);
+            width: 45px;
+            height: 45px;
+            transition: 0.5s;
+        }
+
+        .portal-fixo:hover {
+            transform: rotate(15deg) scale(1.1);
+            filter: drop-shadow(0 0 15px var(--ouro));
+        }
+
+        .portal-tooltip {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--sangue);
+            color: var(--ouro);
+            padding: 5px 15px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            border: 1px solid var(--ouro);
+        }
+
+        .portal-redes .portal-tooltip { right: 60px; }
+        .portal-bio .portal-tooltip { left: 60px; }
+
+        .portal-fixo:hover .portal-tooltip {
+            opacity: 1;
+        }
+
+        /* Views */
+        .view-section {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            position: relative; /* Necessário para os botões absolute */
+        }
+
+        .view-active {
+            display: block;
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Hero */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #1a0505 0%, #050505 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .ritual-btn {
+            background: transparent;
+            border: 2px solid var(--ouro);
+            color: var(--ouro);
+            padding: 1.5rem 3rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: 900;
+            transition: all 0.5s;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .ritual-btn:hover {
+            background: var(--ouro);
+            color: #000;
+            box-shadow: 0 0 30px var(--ouro);
+            transform: scale(1.05);
+        }
+
+        .manifesto-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 3rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .manifesto-container::before {
+            content: '†';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--escuridao);
+            padding: 0 15px;
+            color: var(--sangue);
+            font-size: 2rem;
+        }
+
+        /* Cruzes */
+        .cruz-item {
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .cruz-item:hover {
+            background: rgba(136, 8, 8, 0.2);
+            transform: scale(1.1);
+        }
+
+        .expansivel-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0, 1, 0, 1);
+            background: rgba(20, 20, 20, 0.8);
+            border-left: 2px solid var(--sangue);
+            margin-top: 1rem;
+        }
+
+        .expansivel-content.open {
+            max-height: 1000px;
+            transition: max-height 1s ease-in-out;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cards Grimório */
+        .grid-pombagira {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .entidade-card {
+            background: #0d0d0d;
+            border-bottom: 3px solid var(--sangue);
+            padding: 2rem;
+            transition: 0.4s;
+            border: 1px solid #1a1a1a;
+        }
+
+        .entidade-card:hover {
+            border-color: var(--ouro);
+            transform: translateY(-5px);
+            background: #151515;
+        }
+
+        .video-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--ouro);
+            text-decoration: none;
+            border-bottom: 1px solid var(--ouro);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .simbolo-sacro {
+            font-size: 3rem;
+            color: var(--sangue);
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VIEW 1: MANIFESTO DE ENTRADA -->
+    <main id="view-manifesto" class="view-section view-active">
+        
+        <!-- OS PORTAIS FORAM MOVIDOS PARA DENTRO DESTA VIEW -->
+        <!-- PORTAL ESQUERDO: BIO SITE (A CHAVE) -->
+        <a href="https://bio.site/AlmasdePombagira" target="_blank" class="portal-fixo portal-bio">
+            <span class="portal-tooltip">Abrir Caminhos</span>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7,14A5,5 0 0,1 2,9A5,5 0 0,1 7,4C8.94,4 10.6,5.1 11.42,6.72L15,3L19,7L15.3,10.7C15.11,12.56 13.54,14 11.6,14H11.5L9.5,16V18H7.5L5.5,20H2V16.5L7,11.5L7,14M7,6A3,3 0 0,0 4,9A3,3 0 0,0 7,12A3,3 0 0,0 10,9A3,3 0 0,0 7,6Z"/>
+            </svg>
+        </a>
+
+        <!-- PORTAL DIREITO: REDES SOCIAIS (A CHAMADA) -->
+        <a href="https://alexialuzdeferro.github.io/melusine_redes/" target="_blank" class="portal-fixo portal-redes">
+            <span class="portal-tooltip">Estabelecer Conexão</span>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20,15.5C18.8,15.5 17.5,15.3 16.4,14.9C16.3,14.9 16.2,14.9 16.1,14.9C15.8,14.9 15.6,15 15.4,15.2L13.2,17.4C10.4,15.9 8,13.6 6.6,10.8L8.8,8.6C9.1,8.3 9.2,7.9 9,7.6C8.7,6.5 8.5,5.2 8.5,4C8.5,3.5 8,3 7.5,3H4C3.5,3 3,3.5 3,4C3,13.4 10.6,21 20,21C20.5,21 21,20.5 21,20V16.5C21,16 20.5,15.5 20,15.5M5,5H6.5C6.6,5.9 6.8,6.8 7,7.6L5.8,8.8C5.4,7.6 5.1,6.3 5,5M19,19C17.7,18.9 16.4,18.6 15.2,18.2L16.4,17C17.2,17.2 18.1,17.4 19,17.5V19Z"/>
+            </svg>
+        </a>
+
+        <section class="hero-section">
+            <h1 class="text-6xl md:text-8xl mb-4 font-black tracking-tighter">
+                A GIRA DAS <span class="text-[var(--sangue)]">12 LUAS</span>
+            </h1>
+            <p class="serif-italic text-2xl text-[var(--ouro)] mb-12 italic">O Manifesto da Legião das Senhoras da Noite</p>
+            
+            <button onclick="mudarPara('view-grimorio')" class="ritual-btn">Entrar no Grimório</button>
+
+            <div class="manifesto-container text-left">
+                <h2 class="text-2xl text-[var(--ouro)] mb-6 text-center uppercase tracking-widest font-bold">O Grito da Natureza Feminina</h2>
+                
+                <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+                    <p>
+                        <span class="text-[var(--sangue)] font-bold">Pombagira</span> não é um arquétipo de submissão. Ela é o fogo que consome a hipocrisia e a gargalhada que preenche o vazio da alma.
+                    </p>
+
+                    <!-- AS 4 CRUZES INTERATIVAS -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-8 text-center border-t border-b border-white/10 my-8">
+                        <div class="cruz-item" onclick="toggleInfo('respeito')">
+                            <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
+                            <span class="text-xs uppercase tracking-widest">Respeito</span>
+                        </div>
+                        <div class="cruz-item" onclick="toggleInfo('fundamento')">
+                            <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
+                            <span class="text-xs uppercase tracking-widest">Fundamento</span>
+                        </div>
+                        <div class="cruz-item" onclick="toggleInfo('misterio')">
+                            <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
+                            <span class="text-xs uppercase tracking-widest">Mistério</span>
+                        </div>
+                        <div class="cruz-item" onclick="toggleInfo('poder')">
+                            <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
+                            <span class="text-xs uppercase tracking-widest">Poder</span>
+                        </div>
+                    </div>
+
+                    <!-- CONTEÚDOS EXPANSÍVEIS -->
+                    <div id="info-respeito" class="expansivel-content">
+                        <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">A Lei do Respeito</h4>
+                        <p class="text-sm italic">"Pombagira exige o que ela oferece: dignidade." Respeito não é medo, é o reconhecimento da força ancestral. Você não pisa no chão delas sem pedir licença.</p>
+                    </div>
+
+                    <div id="info-fundamento" class="expansivel-content">
+                        <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">A Raiz do Fundamento</h4>
+                        <p class="text-sm italic">Sem raiz, não há árvore. O fundamento é o conhecimento das ervas, dos pontos, das encruzilhadas e da hierarquia sagrada escrita no tempo.</p>
+                    </div>
+
+                    <div id="info-misterio" class="expansivel-content">
+                        <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">O Véu do Mistério</h4>
+                        <p class="text-sm italic">O mistério é o manto da Dama da Noite. É o que não se diz, mas se sente. Transmuta a dor em força nas sombras, onde o olho profano não alcança.</p>
+                    </div>
+
+                    <div id="info-poder" class="expansivel-content">
+                        <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">A Chama do Poder</h4>
+                        <p class="text-sm italic">Poder é ação. É a espada de Quitéria cortando a demanda. Não é poder sobre os outros, mas poder absoluto sobre o próprio destino.</p>
+                    </div>
+
+                    <p class="serif-italic text-center text-white border-l-2 border-[var(--sangue)] pl-4 py-2 bg-white/5">
+                        "O Grimório agora é você. Aonde você for, a Legião vai junto."
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- VIEW 2: O GRIMÓRIO (12 POMBAGIRAS) -->
+    <main id="view-grimorio" class="view-section py-20">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl text-[var(--ouro)] mb-4 uppercase tracking-widest">As 12 Faces do Sagrado</h2>
+            <div class="w-24 h-1 bg-[var(--sangue)] mx-auto"></div>
+        </div>
+
+        <div class="grid-pombagira">
+            <!-- 1. Maria Padilha -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">♛</div>
+                <h3 class="text-2xl text-white mb-2">Maria Padilha</h3>
+                <p class="text-gray-400 text-sm">Rainha do Trono e das Encruzilhadas. O Fogo que coroa quem governa a si mesma.</p>
+                <a href="https://youtu.be/4SN00P-BS3U" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 2. Maria Mulambo -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">⚱</div>
+                <h3 class="text-2xl text-white mb-2">Maria Mulambo</h3>
+                <p class="text-gray-400 text-sm">Senhora da Transmutação. Transforma os cacos do coração em ouro puríssimo.</p>
+                <a href="https://youtu.be/iprg-CBJtt0" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 3. Maria Quitéria -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">⚔</div>
+                <h3 class="text-2xl text-white mb-2">Maria Quitéria</h3>
+                <p class="text-gray-400 text-sm">A Espada da Legião. A força necessária para cortar o mal pela raiz.</p>
+                <a href="https://www.youtube.com/watch?v=S3LT3Ozzt2k" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 4. Rosa Caveira -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">💀</div>
+                <h3 class="text-2xl text-white mb-2">Rosa Caveira</h3>
+                <p class="text-gray-400 text-sm">Guardiã da Verdade. Ensina que o medo da morte não pode impedir a vida.</p>
+                <a href="https://youtu.be/zCX1TF8IPZw" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 5. Dama da Noite -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">🌙</div>
+                <h3 class="text-2xl text-white mb-2">Dama da Noite</h3>
+                <p class="text-gray-400 text-sm">Senhora dos Segredos. Cobre os filhos com o silêncio e a clarividência.</p>
+                <a href="https://youtu.be/nlQ7Jh5yccI" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 6. Sete Saias -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">✺</div>
+                <h3 class="text-2xl text-white mb-2">Sete Saias</h3>
+                <p class="text-gray-400 text-sm">Giro da Fortuna e Paixão. Transforma dor em movimento de vitória.</p>
+                <a href="https://www.youtube.com/watch?v=vU5NXfXAPTM" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 7. Cigana -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">🎴</div>
+                <h3 class="text-2xl text-white mb-2">Pombagira Cigana</h3>
+                <p class="text-gray-400 text-sm">Dona das Estradas. Liberdade é o único tesouro que não aceita correntes.</p>
+                <a href="https://youtu.be/YX38d26TDRk" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 8. Maria Navalha -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">🔪</div>
+                <h3 class="text-2xl text-white mb-2">Maria Navalha</h3>
+                <p class="text-gray-400 text-sm">A Lei da Rua. Nunca levar desaforo e saber sambar sobre as dificuldades.</p>
+                <a href="https://youtu.be/qYF2w3Mwp3g" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 9. Pombagira da Praia -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">♒</div>
+                <h3 class="text-2xl text-white mb-2">Maria da Praia</h3>
+                <p class="text-gray-400 text-sm">Sal e Espuma que lavam o espírito. O equilíbrio emocional que vem do mar.</p>
+                <a href="https://www.youtube.com/watch?v=NsPxaDZrs8E" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 10. Maria Farrapo -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">✂</div>
+                <h3 class="text-2xl text-white mb-2">Maria Farrapo</h3>
+                <p class="text-gray-400 text-sm">Costureira da Sanidade. Rasga a loucura e reconstrói a alma com aço.</p>
+                <a href="https://www.youtube.com/watch?v=80dRxkEQ34Y" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 11. Pombagira Menina -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">✨</div>
+                <h3 class="text-2xl text-white mb-2">Pombagira Menina</h3>
+                <p class="text-gray-400 text-sm">Encanto e Astúcia. Sorriso que devolve o brilho e a sabedoria leve.</p>
+                <a href="https://www.youtube.com/watch?v=bFpbM5uHric" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+
+            <!-- 12. Pombagira da Figueira -->
+            <div class="entidade-card">
+                <div class="simbolo-sacro">🌳</div>
+                <h3 class="text-2xl text-white mb-2">Figueira</h3>
+                <p class="text-gray-400 text-sm">Raízes Ancestrais. Força telúrica que garante estabilidade absoluta.</p>
+                <a href="https://youtu.be/Y_s-V-hXQsk" target="_blank" class="video-btn">Ver Ritual →</a>
+            </div>
+        </div>
+
+        <div class="mt-20 text-center">
+            <button onclick="mudarPara('view-manifesto')" class="text-[var(--ouro)] text-xs tracking-widest uppercase border border-[var(--ouro)] px-8 py-3 hover:bg-[var(--ouro)] hover:text-black transition duration-500">Fechar Tronqueira</button>
+        </div>
+    </main>
+
+    <footer class="p-10 text-center border-t border-gray-900 bg-black/50">
+        <p class="text-[var(--sangue)] font-bold tracking-[0.3em]">ALUPANDÊ! MOJUBÁ!</p>
+        <p class="text-gray-600 text-[10px] mt-4 uppercase font-bold">Respeito | Fundamento | Mistério | Poder</p>
+    </footer>
+
+    <script>
+        // Sistema de Troca de Páginas (Views)
+        function mudarPara(idView) {
+            document.querySelectorAll('.view-section').forEach(view => {
+                view.classList.remove('view-active');
+            });
+            document.getElementById(idView).classList.add('view-active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Sistema de Cruzes Expansíveis
+        function toggleInfo(pilar) {
+            const content = document.getElementById('info-' + pilar);
+            const isOpen = content.classList.contains('open');
+            document.querySelectorAll('.expansivel-content').forEach(el => el.classList.remove('open'));
+            if(!isOpen) {
+                content.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>
