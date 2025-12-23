@@ -40,9 +40,9 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 15px;
-            background: rgba(0, 0, 0, 0.7);
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid var(--sangue);
             border-radius: 30px;
             backdrop-filter: blur(5px);
@@ -50,18 +50,18 @@
         }
 
         .portal-redes { 
-            top: 20px; 
-            right: 20px; 
+            top: 15px; 
+            right: 15px; 
         }
         .portal-bio { 
-            top: 20px; 
-            left: 20px; 
+            top: 15px; 
+            left: 15px; 
         }
 
         .portal-fixo svg {
             fill: var(--ouro);
-            width: 35px;
-            height: 35px;
+            width: 28px;
+            height: 28px;
             transition: 0.5s;
             flex-shrink: 0;
         }
@@ -76,8 +76,8 @@
         /* Texto fixo ao lado do ícone - MODIFICADO */
         .portal-texto {
             color: var(--ouro);
-            font-size: 11px;
-            letter-spacing: 1.5px;
+            font-size: 10px;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
             font-weight: bold;
             white-space: nowrap;
@@ -110,23 +110,25 @@
             align-items: center;
             justify-content: center;
             background: radial-gradient(circle at center, #1a0505 0%, #050505 100%);
-            padding: 4rem 2rem;
+            padding: 5rem 1.5rem 2rem;
             text-align: center;
             min-height: 100vh;
+            position: relative;
         }
 
         .ritual-btn {
             background: transparent;
             border: 2px solid var(--ouro);
             color: var(--ouro);
-            padding: 1.5rem 3rem;
+            padding: 1.2rem 2.5rem;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             font-weight: 900;
             transition: all 0.5s;
             cursor: pointer;
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
             margin-bottom: 2rem;
+            font-size: 0.9rem;
         }
 
         .ritual-btn:hover {
@@ -139,7 +141,7 @@
         .manifesto-container {
             max-width: 900px;
             margin: 2rem auto;
-            padding: 3rem;
+            padding: 2rem;
             border: 1px solid rgba(212, 175, 55, 0.2);
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(10px);
@@ -162,7 +164,7 @@
         .cruz-item {
             cursor: pointer;
             transition: all 0.3s;
-            padding: 1rem;
+            padding: 0.8rem;
             border-radius: 8px;
         }
         .cruz-item:hover {
@@ -292,37 +294,116 @@
             transform: scale(1.1);
         }
 
-        /* Responsividade para os botões */
+        /* MOBILE: Solução para botões sobrepostos */
         @media (max-width: 768px) {
+            .hero-section {
+                padding-top: 6.5rem;
+            }
+            
             .portal-fixo {
-                padding: 6px 12px;
-                gap: 8px;
+                flex-direction: column;
+                gap: 4px;
+                padding: 8px 10px;
+                width: auto;
+                min-height: 70px;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .portal-bio {
+                top: 10px;
+                left: 10px;
+                right: auto;
+            }
+            
+            .portal-redes {
+                top: 10px;
+                right: 10px;
+                left: auto;
             }
             
             .portal-texto {
-                font-size: 9px;
+                font-size: 8px;
                 letter-spacing: 1px;
+                line-height: 1.2;
+                white-space: normal;
+                max-width: 60px;
+                text-align: center;
             }
             
             .portal-fixo svg {
-                width: 28px;
-                height: 28px;
+                width: 22px;
+                height: 22px;
             }
             
-            .portal-bio { 
-                top: 15px; 
-                left: 15px; 
+            .manifesto-container {
+                padding: 1.5rem;
+                margin-top: 0.5rem;
             }
             
-            .portal-redes { 
-                top: 15px; 
-                right: 15px; 
+            h1 {
+                font-size: 2.5rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            .serif-italic.text-2xl {
+                font-size: 1.2rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+            
+            .ritual-btn {
+                padding: 1rem 2rem;
+                font-size: 0.8rem;
+                letter-spacing: 3px;
             }
         }
 
+        /* Para telas muito pequenas */
         @media (max-width: 480px) {
+            .hero-section {
+                padding-top: 7rem;
+            }
+            
+            .portal-fixo {
+                padding: 6px 8px;
+                min-height: 65px;
+            }
+            
             .portal-texto {
-                font-size: 8px;
+                font-size: 7px;
+                max-width: 55px;
+            }
+            
+            .portal-fixo svg {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .grid-pombagira {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+                gap: 1.5rem;
+            }
+            
+            .grid-cols-2.md\:grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5rem !important;
+            }
+            
+            .cruz-item {
+                padding: 0.5rem;
+            }
+            
+            .cruz-item span {
+                font-size: 9px !important;
+            }
+        }
+
+        /* Para telas muito largas */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .portal-texto {
+                font-size: 9px;
             }
             
             .portal-fixo svg {
@@ -374,9 +455,9 @@
                             <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
                             <span class="text-xs uppercase tracking-widest">Respeito</span>
                         </div>
-                        <div class="cruz-item" onclick="toggleInfo('fundamento')">
+                        <div class="cruz-item" onclick="toggleInfo('razao')">
                             <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
-                            <span class="text-xs uppercase tracking-widest">Fundamento</span>
+                            <span class="text-xs uppercase tracking-widest">Razão</span>
                         </div>
                         <div class="cruz-item" onclick="toggleInfo('misterio')">
                             <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
@@ -393,9 +474,9 @@
                         <p class="text-sm italic">"Pombagira exige o que ela oferece: dignidade." Respeito não é medo, é o reconhecimento da força ancestral. Você não pisa no chão delas sem pedir licença.</p>
                     </div>
 
-                    <div id="info-fundamento" class="expansivel-content">
-                        <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">A Raiz do Fundamento</h4>
-                        <p class="text-sm italic">Sem raiz, não há árvore. O fundamento é o conhecimento das ervas, dos pontos, das encruzilhadas e da hierarquia sagrada escrita no tempo.</p>
+                    <div id="info-razao" class="expansivel-content">
+                        <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">A Raiz da Razão</h4>
+                        <p class="text-sm italic">A razão é o conhecimento das leis espirituais. É entender por que se faz, como se faz e para quem se faz. A razão clareia o caminho nos momentos de escuridão.</p>
                     </div>
 
                     <div id="info-misterio" class="expansivel-content">
@@ -536,7 +617,7 @@
 
     <footer class="p-10 text-center border-t border-gray-900 bg-black/50">
         <p class="text-[var(--sangue)] font-bold tracking-[0.3em]">ALUPANDÊ! MOJUBÁ!</p>
-        <p class="text-gray-600 text-[10px] mt-4 uppercase font-bold">Respeito | Fundamento | Mistério | Poder</p>
+        <p class="text-gray-600 text-[10px] mt-4 uppercase font-bold">Respeito | Razão | Mistério | Poder</p>
     </footer>
 
     <script>
