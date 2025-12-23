@@ -31,9 +31,9 @@
         ::-webkit-scrollbar-track { background: var(--escuridao); }
         ::-webkit-scrollbar-thumb { background: var(--sangue); }
 
-        /* Portais de Conexão (Apenas no Manifesto) */
+        /* Portais de Conexão */
         .portal-fixo {
-            position: absolute; /* Mudado para absolute para ficar preso à secção */
+            position: absolute;
             z-index: 1000;
             cursor: pointer;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -58,8 +58,6 @@
 
         .portal-tooltip {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
             background: var(--sangue);
             color: var(--ouro);
             padding: 5px 15px;
@@ -73,8 +71,19 @@
             border: 1px solid var(--ouro);
         }
 
-        .portal-redes .portal-tooltip { right: 60px; }
-        .portal-bio .portal-tooltip { left: 60px; }
+        /* AJUSTE SOLICITADO: Tooltip do Bio (Esquerda) continua lateral */
+        .portal-bio .portal-tooltip { 
+            top: 50%;
+            left: 60px; 
+            transform: translateY(-50%);
+        }
+
+        /* AJUSTE SOLICITADO: Tooltip do Telefone (Direita) abre para baixo */
+        .portal-redes .portal-tooltip { 
+            top: 55px; /* Abaixo do ícone (45px + 10px de folga) */
+            right: 0; 
+            transform: none; /* Remove o deslocamento vertical central */
+        }
 
         .portal-fixo:hover .portal-tooltip {
             opacity: 1;
@@ -85,7 +94,7 @@
             display: none;
             min-height: 100vh;
             width: 100%;
-            position: relative; /* Necessário para os botões absolute */
+            position: relative;
         }
 
         .view-active {
@@ -229,8 +238,7 @@
     <!-- VIEW 1: MANIFESTO DE ENTRADA -->
     <main id="view-manifesto" class="view-section view-active">
         
-        <!-- OS PORTAIS FORAM MOVIDOS PARA DENTRO DESTA VIEW -->
-        <!-- PORTAL ESQUERDO: BIO SITE (A CHAVE) -->
+        <!-- PORTAL ESQUERDO: BIO SITE -->
         <a href="https://bio.site/AlmasdePombagira" target="_blank" class="portal-fixo portal-bio">
             <span class="portal-tooltip">Abrir Caminhos</span>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -238,7 +246,7 @@
             </svg>
         </a>
 
-        <!-- PORTAL DIREITO: REDES SOCIAIS (A CHAMADA) -->
+        <!-- PORTAL DIREITO: REDES SOCIAIS (TELEFONE) -->
         <a href="https://alexialuzdeferro.github.io/melusine_redes/" target="_blank" class="portal-fixo portal-redes">
             <span class="portal-tooltip">Estabelecer Conexão</span>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -262,7 +270,6 @@
                         <span class="text-[var(--sangue)] font-bold">Pombagira</span> não é um arquétipo de submissão. Ela é o fogo que consome a hipocrisia e a gargalhada que preenche o vazio da alma.
                     </p>
 
-                    <!-- AS 4 CRUZES INTERATIVAS -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-8 text-center border-t border-b border-white/10 my-8">
                         <div class="cruz-item" onclick="toggleInfo('respeito')">
                             <div class="text-[var(--sangue)] text-4xl mb-2">♰</div>
@@ -282,7 +289,6 @@
                         </div>
                     </div>
 
-                    <!-- CONTEÚDOS EXPANSÍVEIS -->
                     <div id="info-respeito" class="expansivel-content">
                         <h4 class="text-[var(--ouro)] font-bold mb-2 uppercase text-sm">A Lei do Respeito</h4>
                         <p class="text-sm italic">"Pombagira exige o que ela oferece: dignidade." Respeito não é medo, é o reconhecimento da força ancestral. Você não pisa no chão delas sem pedir licença.</p>
@@ -311,7 +317,7 @@
         </section>
     </main>
 
-    <!-- VIEW 2: O GRIMÓRIO (12 POMBAGIRAS) -->
+    <!-- VIEW 2: O GRIMÓRIO -->
     <main id="view-grimorio" class="view-section py-20">
         <div class="text-center mb-16">
             <h2 class="text-4xl text-[var(--ouro)] mb-4 uppercase tracking-widest">As 12 Faces do Sagrado</h2>
@@ -319,7 +325,7 @@
         </div>
 
         <div class="grid-pombagira">
-            <!-- 1. Maria Padilha -->
+            <!-- Maria Padilha -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">♛</div>
                 <h3 class="text-2xl text-white mb-2">Maria Padilha</h3>
@@ -327,7 +333,7 @@
                 <a href="https://youtu.be/4SN00P-BS3U" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 2. Maria Mulambo -->
+            <!-- Maria Mulambo -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">⚱</div>
                 <h3 class="text-2xl text-white mb-2">Maria Mulambo</h3>
@@ -335,7 +341,7 @@
                 <a href="https://youtu.be/iprg-CBJtt0" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 3. Maria Quitéria -->
+            <!-- Maria Quitéria -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">⚔</div>
                 <h3 class="text-2xl text-white mb-2">Maria Quitéria</h3>
@@ -343,7 +349,7 @@
                 <a href="https://www.youtube.com/watch?v=S3LT3Ozzt2k" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 4. Rosa Caveira -->
+            <!-- Rosa Caveira -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">💀</div>
                 <h3 class="text-2xl text-white mb-2">Rosa Caveira</h3>
@@ -351,7 +357,7 @@
                 <a href="https://youtu.be/zCX1TF8IPZw" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 5. Dama da Noite -->
+            <!-- Dama da Noite -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">🌙</div>
                 <h3 class="text-2xl text-white mb-2">Dama da Noite</h3>
@@ -359,7 +365,7 @@
                 <a href="https://youtu.be/nlQ7Jh5yccI" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 6. Sete Saias -->
+            <!-- Sete Saias -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">✺</div>
                 <h3 class="text-2xl text-white mb-2">Sete Saias</h3>
@@ -367,7 +373,7 @@
                 <a href="https://www.youtube.com/watch?v=vU5NXfXAPTM" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 7. Cigana -->
+            <!-- Cigana -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">🎴</div>
                 <h3 class="text-2xl text-white mb-2">Pombagira Cigana</h3>
@@ -375,7 +381,7 @@
                 <a href="https://youtu.be/YX38d26TDRk" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 8. Maria Navalha -->
+            <!-- Maria Navalha -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">🔪</div>
                 <h3 class="text-2xl text-white mb-2">Maria Navalha</h3>
@@ -383,7 +389,7 @@
                 <a href="https://youtu.be/qYF2w3Mwp3g" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 9. Pombagira da Praia -->
+            <!-- Pombagira da Praia -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">♒</div>
                 <h3 class="text-2xl text-white mb-2">Maria da Praia</h3>
@@ -391,7 +397,7 @@
                 <a href="https://www.youtube.com/watch?v=NsPxaDZrs8E" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 10. Maria Farrapo -->
+            <!-- Maria Farrapo -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">✂</div>
                 <h3 class="text-2xl text-white mb-2">Maria Farrapo</h3>
@@ -399,7 +405,7 @@
                 <a href="https://www.youtube.com/watch?v=80dRxkEQ34Y" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 11. Pombagira Menina -->
+            <!-- Pombagira Menina -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">✨</div>
                 <h3 class="text-2xl text-white mb-2">Pombagira Menina</h3>
@@ -407,7 +413,7 @@
                 <a href="https://www.youtube.com/watch?v=bFpbM5uHric" target="_blank" class="video-btn">Ver Ritual →</a>
             </div>
 
-            <!-- 12. Pombagira da Figueira -->
+            <!-- Pombagira da Figueira -->
             <div class="entidade-card">
                 <div class="simbolo-sacro">🌳</div>
                 <h3 class="text-2xl text-white mb-2">Figueira</h3>
@@ -427,7 +433,6 @@
     </footer>
 
     <script>
-        // Sistema de Troca de Páginas (Views)
         function mudarPara(idView) {
             document.querySelectorAll('.view-section').forEach(view => {
                 view.classList.remove('view-active');
@@ -436,7 +441,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Sistema de Cruzes Expansíveis
         function toggleInfo(pilar) {
             const content = document.getElementById('info-' + pilar);
             const isOpen = content.classList.contains('open');
