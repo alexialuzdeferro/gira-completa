@@ -31,62 +31,58 @@
         ::-webkit-scrollbar-track { background: var(--escuridao); }
         ::-webkit-scrollbar-thumb { background: var(--sangue); }
 
-        /* Portais de Conexão */
+        /* Portais de Conexão - MODIFICADO */
         .portal-fixo {
             position: absolute;
             z-index: 1000;
             cursor: pointer;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 0 5px var(--sangue));
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--sangue);
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            filter: drop-shadow(0 0 5px var(--sangue));
         }
 
-        .portal-redes { top: 20px; right: 20px; }
-        .portal-bio { top: 20px; left: 20px; }
+        .portal-redes { 
+            top: 20px; 
+            right: 20px; 
+        }
+        .portal-bio { 
+            top: 20px; 
+            left: 20px; 
+        }
 
         .portal-fixo svg {
             fill: var(--ouro);
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             transition: 0.5s;
+            flex-shrink: 0;
         }
 
         .portal-fixo:hover {
-            transform: rotate(15deg) scale(1.1);
+            transform: scale(1.05);
             filter: drop-shadow(0 0 15px var(--ouro));
+            background: rgba(0, 0, 0, 0.9);
+            border-color: var(--ouro);
         }
 
-        .portal-tooltip {
-            position: absolute;
-            background: var(--sangue);
+        /* Texto fixo ao lado do ícone - MODIFICADO */
+        .portal-texto {
             color: var(--ouro);
-            padding: 5px 15px;
-            font-size: 10px;
-            letter-spacing: 2px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
+            font-weight: bold;
             white-space: nowrap;
-            opacity: 0;
-            transition: 0.3s;
-            pointer-events: none;
-            border: 1px solid var(--ouro);
-        }
-
-        /* AJUSTE SOLICITADO: Tooltip do Bio (Esquerda) continua lateral */
-        .portal-bio .portal-tooltip { 
-            top: 50%;
-            left: 60px; 
-            transform: translateY(-50%);
-        }
-
-        /* AJUSTE SOLICITADO: Tooltip do Telefone (Direita) abre para baixo */
-        .portal-redes .portal-tooltip { 
-            top: 55px; /* Abaixo do ícone (45px + 10px de folga) */
-            right: 0; 
-            transform: none; /* Remove o deslocamento vertical central */
-        }
-
-        .portal-fixo:hover .portal-tooltip {
-            opacity: 1;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
         }
 
         /* Views */
@@ -223,6 +219,15 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .video-btn:hover {
+            color: #fff;
         }
 
         .simbolo-sacro {
@@ -231,6 +236,100 @@
             margin-bottom: 1rem;
             opacity: 0.6;
         }
+
+        /* Modal de Vídeo */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border: 2px solid var(--sangue);
+            box-shadow: 0 0 50px rgba(136, 8, 8, 0.5);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .fechar-video {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: var(--sangue);
+            color: var(--ouro);
+            border: 2px solid var(--ouro);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            font-family: 'Cinzel Decorative', cursive;
+        }
+
+        .fechar-video:hover {
+            background: var(--ouro);
+            color: var(--sangue);
+            transform: scale(1.1);
+        }
+
+        /* Responsividade para os botões */
+        @media (max-width: 768px) {
+            .portal-fixo {
+                padding: 6px 12px;
+                gap: 8px;
+            }
+            
+            .portal-texto {
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+            
+            .portal-fixo svg {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .portal-bio { 
+                top: 15px; 
+                left: 15px; 
+            }
+            
+            .portal-redes { 
+                top: 15px; 
+                right: 15px; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portal-texto {
+                font-size: 8px;
+            }
+            
+            .portal-fixo svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -238,20 +337,20 @@
     <!-- VIEW 1: MANIFESTO DE ENTRADA -->
     <main id="view-manifesto" class="view-section view-active">
         
-        <!-- PORTAL ESQUERDO: BIO SITE -->
+        <!-- PORTAL ESQUERDO: BIO SITE - MODIFICADO -->
         <a href="https://bio.site/AlmasdePombagira" target="_blank" class="portal-fixo portal-bio">
-            <span class="portal-tooltip">Abrir Caminhos</span>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M7,14A5,5 0 0,1 2,9A5,5 0 0,1 7,4C8.94,4 10.6,5.1 11.42,6.72L15,3L19,7L15.3,10.7C15.11,12.56 13.54,14 11.6,14H11.5L9.5,16V18H7.5L5.5,20H2V16.5L7,11.5L7,14M7,6A3,3 0 0,0 4,9A3,3 0 0,0 7,12A3,3 0 0,0 10,9A3,3 0 0,0 7,6Z"/>
             </svg>
+            <span class="portal-texto">ABRIR CAMINHOS</span>
         </a>
 
-        <!-- PORTAL DIREITO: REDES SOCIAIS (TELEFONE) -->
+        <!-- PORTAL DIREITO: REDES SOCIAIS (TELEFONE) - MODIFICADO -->
         <a href="https://alexialuzdeferro.github.io/melusine_redes/" target="_blank" class="portal-fixo portal-redes">
-            <span class="portal-tooltip">Estabelecer Conexão</span>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20,15.5C18.8,15.5 17.5,15.3 16.4,14.9C16.3,14.9 16.2,14.9 16.1,14.9C15.8,14.9 15.6,15 15.4,15.2L13.2,17.4C10.4,15.9 8,13.6 6.6,10.8L8.8,8.6C9.1,8.3 9.2,7.9 9,7.6C8.7,6.5 8.5,5.2 8.5,4C8.5,3.5 8,3 7.5,3H4C3.5,3 3,3.5 3,4C3,13.4 10.6,21 20,21C20.5,21 21,20.5 21,20V16.5C21,16 20.5,15.5 20,15.5M5,5H6.5C6.6,5.9 6.8,6.8 7,7.6L5.8,8.8C5.4,7.6 5.1,6.3 5,5M19,19C17.7,18.9 16.4,18.6 15.2,18.2L16.4,17C17.2,17.2 18.1,17.4 19,17.5V19Z"/>
             </svg>
+            <span class="portal-texto">ESTABELECER CONEXÃO</span>
         </a>
 
         <section class="hero-section">
@@ -330,7 +429,7 @@
                 <div class="simbolo-sacro">♛</div>
                 <h3 class="text-2xl text-white mb-2">Maria Padilha</h3>
                 <p class="text-gray-400 text-sm">Rainha do Trono e das Encruzilhadas. O Fogo que coroa quem governa a si mesma.</p>
-                <a href="https://youtu.be/4SN00P-BS3U" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/4SN00P-BS3U')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Maria Mulambo -->
@@ -338,7 +437,7 @@
                 <div class="simbolo-sacro">⚱</div>
                 <h3 class="text-2xl text-white mb-2">Maria Mulambo</h3>
                 <p class="text-gray-400 text-sm">Senhora da Transmutação. Transforma os cacos do coração em ouro puríssimo.</p>
-                <a href="https://youtu.be/iprg-CBJtt0" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/iprg-CBJtt0')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Maria Quitéria -->
@@ -346,7 +445,7 @@
                 <div class="simbolo-sacro">⚔</div>
                 <h3 class="text-2xl text-white mb-2">Maria Quitéria</h3>
                 <p class="text-gray-400 text-sm">A Espada da Legião. A força necessária para cortar o mal pela raiz.</p>
-                <a href="https://www.youtube.com/watch?v=S3LT3Ozzt2k" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/S3LT3Ozzt2k')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Rosa Caveira -->
@@ -354,7 +453,7 @@
                 <div class="simbolo-sacro">💀</div>
                 <h3 class="text-2xl text-white mb-2">Rosa Caveira</h3>
                 <p class="text-gray-400 text-sm">Guardiã da Verdade. Ensina que o medo da morte não pode impedir a vida.</p>
-                <a href="https://youtu.be/zCX1TF8IPZw" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/zCX1TF8IPZw')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Dama da Noite -->
@@ -362,7 +461,7 @@
                 <div class="simbolo-sacro">🌙</div>
                 <h3 class="text-2xl text-white mb-2">Dama da Noite</h3>
                 <p class="text-gray-400 text-sm">Senhora dos Segredos. Cobre os filhos com o silêncio e a clarividência.</p>
-                <a href="https://youtu.be/nlQ7Jh5yccI" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/nlQ7Jh5yccI')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Sete Saias -->
@@ -370,7 +469,7 @@
                 <div class="simbolo-sacro">✺</div>
                 <h3 class="text-2xl text-white mb-2">Sete Saias</h3>
                 <p class="text-gray-400 text-sm">Giro da Fortuna e Paixão. Transforma dor em movimento de vitória.</p>
-                <a href="https://www.youtube.com/watch?v=vU5NXfXAPTM" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/vU5NXfXAPTM')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Cigana -->
@@ -378,7 +477,7 @@
                 <div class="simbolo-sacro">🎴</div>
                 <h3 class="text-2xl text-white mb-2">Pombagira Cigana</h3>
                 <p class="text-gray-400 text-sm">Dona das Estradas. Liberdade é o único tesouro que não aceita correntes.</p>
-                <a href="https://youtu.be/YX38d26TDRk" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/YX38d26TDRk')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Maria Navalha -->
@@ -386,7 +485,7 @@
                 <div class="simbolo-sacro">🔪</div>
                 <h3 class="text-2xl text-white mb-2">Maria Navalha</h3>
                 <p class="text-gray-400 text-sm">A Lei da Rua. Nunca levar desaforo e saber sambar sobre as dificuldades.</p>
-                <a href="https://youtu.be/qYF2w3Mwp3g" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/qYF2w3Mwp3g')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Pombagira da Praia -->
@@ -394,7 +493,7 @@
                 <div class="simbolo-sacro">♒</div>
                 <h3 class="text-2xl text-white mb-2">Maria da Praia</h3>
                 <p class="text-gray-400 text-sm">Sal e Espuma que lavam o espírito. O equilíbrio emocional que vem do mar.</p>
-                <a href="https://www.youtube.com/watch?v=NsPxaDZrs8E" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/NsPxaDZrs8E')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Maria Farrapo -->
@@ -402,7 +501,7 @@
                 <div class="simbolo-sacro">✂</div>
                 <h3 class="text-2xl text-white mb-2">Maria Farrapo</h3>
                 <p class="text-gray-400 text-sm">Costureira da Sanidade. Rasga a loucura e reconstrói a alma com aço.</p>
-                <a href="https://www.youtube.com/watch?v=80dRxkEQ34Y" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/80dRxkEQ34Y')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Pombagira Menina -->
@@ -410,7 +509,7 @@
                 <div class="simbolo-sacro">✨</div>
                 <h3 class="text-2xl text-white mb-2">Pombagira Menina</h3>
                 <p class="text-gray-400 text-sm">Encanto e Astúcia. Sorriso que devolve o brilho e a sabedoria leve.</p>
-                <a href="https://www.youtube.com/watch?v=bFpbM5uHric" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/bFpbM5uHric')" class="video-btn">Ver Ritual →</button>
             </div>
 
             <!-- Pombagira da Figueira -->
@@ -418,7 +517,7 @@
                 <div class="simbolo-sacro">🌳</div>
                 <h3 class="text-2xl text-white mb-2">Figueira</h3>
                 <p class="text-gray-400 text-sm">Raízes Ancestrais. Força telúrica que garante estabilidade absoluta.</p>
-                <a href="https://youtu.be/Y_s-V-hXQsk" target="_blank" class="video-btn">Ver Ritual →</a>
+                <button onclick="abrirVideo('https://www.youtube.com/embed/Y_s-V-hXQsk')" class="video-btn">Ver Ritual →</button>
             </div>
         </div>
 
@@ -426,6 +525,14 @@
             <button onclick="mudarPara('view-manifesto')" class="text-[var(--ouro)] text-xs tracking-widest uppercase border border-[var(--ouro)] px-8 py-3 hover:bg-[var(--ouro)] hover:text-black transition duration-500">Fechar Tronqueira</button>
         </div>
     </main>
+
+    <!-- MODAL DE VÍDEO -->
+    <div id="videoModal" class="video-modal" onclick="fecharVideo(event)">
+        <div class="video-container">
+            <button class="fechar-video" onclick="fecharVideo(event)">† FECHAR</button>
+            <iframe id="videoFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <footer class="p-10 text-center border-t border-gray-900 bg-black/50">
         <p class="text-[var(--sangue)] font-bold tracking-[0.3em]">ALUPANDÊ! MOJUBÁ!</p>
@@ -447,6 +554,24 @@
             document.querySelectorAll('.expansivel-content').forEach(el => el.classList.remove('open'));
             if(!isOpen) {
                 content.classList.add('open');
+            }
+        }
+
+        function abrirVideo(url) {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('videoFrame');
+            iframe.src = url + '?autoplay=1';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharVideo(event) {
+            if (event.target.id === 'videoModal' || event.target.classList.contains('fechar-video')) {
+                const modal = document.getElementById('videoModal');
+                const iframe = document.getElementById('videoFrame');
+                iframe.src = '';
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
         }
     </script>
